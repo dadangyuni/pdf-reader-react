@@ -138,6 +138,7 @@ const App = (props) => {
   return (
     <div className='page-container'>
       <Toolbar onFullScreen={onFullScreen}/>
+      Update
       <div className='content'>
         <div className='reading-container' id='reading-container' style={{transform:`scale(${scale})`}}>
             <Document 
