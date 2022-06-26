@@ -8,6 +8,7 @@ const Toolbar = ({onFullScreen}) => {
         <button className='btn-side-nav square'>
           <FontAwesomeIcon icon={faBars}/>
         </button>
+        <a href='/term/term_policy.html' style={{border:"1px solid black"}}>Term</a>
         <div>Judul Buku</div>
         <div className='prop-action'>
           <button className='btn-toolbar-nav'>
