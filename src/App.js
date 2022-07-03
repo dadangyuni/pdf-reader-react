@@ -14,9 +14,7 @@ const App = (props) => {
           path='/' 
           element={
             <React.Suspense fallback={<div>Loading</div>}>
-              <FlipBook
-                {...props}
-              />
+              <FlipBook {...props} />
             </React.Suspense>}
         />
         <Route path='*' element={<div>Notfound</div>} />

@@ -8,9 +8,9 @@
     font-family: sans-serif;
     min-height: 100vh;
     min-width: 100vw;
-    display: flex;
-    flex-direction: column;
     max-height: 100vh;
+    background-color: #E1E8F6;
+    display: flex;
 }
 
 .header{
@@ -64,36 +64,126 @@
 }
 
 .toolbar > .prop-action > .btn-toolbar-nav.square, .toolbar > .btn-side-nav.square{
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     padding: 0;
 }
 
 .content{
     flex: 1 1 auto;
-    background-color: #E1E8F6;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    background-color: #f1f1f1;
+}
+
+.bookshelf .shelf .loc{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.bookshelf .shelf .row-1{
+    position: relative;
+    width: 360px;
+    height: 158px;
+    margin-left: 33px;
+}
+
+.bookshelf .shelf .loc > div {
+    width: 33%;
+    height: 100%;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+
+.bookshelf .thumb1, .bookshelf .thumb2{
+    background-image:  url(/public/assets/images/cover-book-1.png);
+    width: 87px;
+    height: 115px;
+    background-size: cover;
+}
+
+.loc > div > .sample:hover{
+    z-index: 2;
+    cursor: none;
+    background-color: white;
+    -webkit-transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+    -moz-transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+    -ms-transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+    -o-transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+    transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+}
+
+.bookshelf .shelf .row-2 {
+    position: relative;
+    margin-top: 20px;
+    height: 164px;
+    width: 360px;
+    margin-left: 33px;
+}
+
+.bookshelf .sample, .bookshelf-row .sample{
+    margin: auto;
+    position: relative;
+    z-index: 1;
+    -webkit-box-shadow: 2px 2px 5px rgb(0 0 0 / 60%);
+    -moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    -ms-box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    -o-box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    box-shadow: 2px 2px 5px rgb(0 0 0 / 60%);
+    -webkit-transition: -webkit-transform 0.1s;
+    -webkit-transform: translate(0, 0);
+    -moz-transition: -moz-transform 0.1s;
+    -moz-transform: translate(0, 0);
+    -ms-transition: -ms-transform 0.1s;
+    -ms-transform: translate(0, 0);
+    -o-transition: -o-transform 0.1s;
+    -o-transform: translate(0, 0);
+    transition: transform 0.1s;
+    transform: translate(0, 0);
 }
 
 .reading-container{
     max-width: 1024px;
     width: 100%;
     margin: 5px auto;
-    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     transition: all .2s ease-in-out;
+}
+
+.bookshelf .shelf{
+    margin: auto;
+    width: 426px;
+    height: 440px;
+}
+
+.bookshelf .shelf .row-1:after, .bookshelf .shelf .row-2:after{
+    background: url(/public/assets/images/wall-bookshelf.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    width: 426px;
+    height: 210px;
+    display: block;
+    content: "";
+    margin-left: -38px;
 }
 
 .reading-container > .custom-doc-wrapper{
     height: 100%;
     padding: 0px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .reading-container > .custom-doc-wrapper.full-screen{
@@ -111,30 +201,61 @@
 }
 
 .footer{
-    height: 50px;
-    background-color: #f2f2f7;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
 }
 
+.footer .footer-container{
+    position: relative;
+    
+}
+
+.footer .footer-container .footer-inner{
+    width: fit-content;
+    height: 60px;
+    border-radius: 12px;
+    margin: auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: #f2f2f7;
+    box-shadow:
+        2.8px 2.8px 2.2px rgba(0, 0, 0, 0.02),
+        6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+        12.5px 12.5px 10px rgba(0, 0, 0, 0.035),
+        22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+        41.8px 41.8px 33.4px rgba(0, 0, 0, 0.05),
+        100px 100px 80px rgba(0, 0, 0, 0.07)
+    ;
+}
+
+.stf__item{
+    background: #fff;
+}
+
+.page-overlay{
+    background-color: #000;
+    opacity: 0.5;
+}
 .nav-wrapper{
     display: flex;
     justify-content: space-between;
     gap: 10px;
+    align-items: center;
 }
 
 .nav-wrapper > .btn-next, .nav-wrapper > .btn-prev{
-    height: 30px;
-    width: 80px;
+    height: 40px;
+    width: 40px;
     background: #74C0FC;
     border: none;
     cursor: pointer;
     color: #fff;
     transition: all 0.1s;
-    border-radius: 4px;
+    border-radius: 6px;
 }
 .nav-wrapper > .btn-next:hover, .nav-wrapper > .btn-prev:hover{
     box-shadow: 0 0.25em 0 rgb(20, 110, 190);
@@ -211,10 +332,8 @@
     padding-left: 15px;
 }
 .flip-book{
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5);
     display: none;
-    background-size: cover;
-    background-image: url(/public/assets/images/background.jpg);
+    
 }
 
 .page-set-wrapper{
@@ -231,10 +350,75 @@
 }
 
 .square{
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
     padding: 0;
 }
+
+.modal-book {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.animate{
+    -webkit-transition: -webkit-transform 1s;
+    -moz-transition: -moz-transform 1s;
+    -ms-transition: -ms-transform 1s;
+    -o-transition: -o-transform 1s;
+    transition: transform 1s;
+}
+
+.modal-animated{
+    opacity: 0;
+    transition: all 1.5s;
+}
+
+.modal-content {
+    margin: auto;
+    padding: 20px;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    position: absolute;
+    font-size: 28px;
+    font-weight: bold;
+    top: 5%;
+    right: 5%;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+@keyframes flip-scale-down-diag-2 {
+    0% {
+      transform: scale(1) rotate3d(-1, 1, 0, 0deg);
+    }
+    50% {
+      transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+    }
+    100% {
+      transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+    }
+  }
 
 @media (min-width: 768px){
     .container-book {

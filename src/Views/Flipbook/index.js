@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import HTMLFlipBook from 'react-pageflip';
-import { Document } from 'react-pdf/dist/esm/entry.webpack';
+import { Document } from 'react-pdf';
 import Footer from '../../components/Footer';
-import Page from '../../components/Page';
-import Toolbar from '../../components/Toolbar';
+import PageRender from '../../components/Page';
 import './index.css';
 /*eslint-disable*/
 const App = (props) => {
-  let evCache = [];
-  let prevDiff = -1;
   let flipBook = React.useRef();
   const [fullScreen, setFullScreen] = useState(false);
   const [scale, setScale] = useState(1);
+  const [modal,setModal] = useState({visible:false,x:0, y:0,currentDemo:null});
   const [book,setBook] = useState({
     file:null,
     pdf:{},
@@ -64,126 +62,172 @@ const App = (props) => {
     }));
   };
 
+  const changeState= (data) => {
+    // console.log('data',data);
+  }
+
   const onZoom = (value) => {
     if(value > 0) setScale(value);
   }
 
-  const changeState= (data) => {
-    console.log('data',data);
+  const handleClose = () => {
+    const modalContent = document.getElementById('modal-content');
+    const currentDemo = document.getElementById(modal.currentDemo);
+
+    const bookWidth = modalContent.getBoundingClientRect().width/2;
+    const bookHeight = modalContent.getBoundingClientRect().height/2;
+    const targetPositionLeft = currentDemo.getBoundingClientRect().left;
+    const targetPositionTop = currentDemo.getBoundingClientRect().top;
+    const positionLeft = modalContent.offsetLeft;
+    const positionTop = modalContent.offsetTop;
+    const scaleFrom = currentDemo.getBoundingClientRect().height/modalContent.getBoundingClientRect().height;
+    const posX = (-bookWidth + modalContent.getBoundingClientRect().width/2)*scaleFrom +  bookWidth + positionLeft;
+    const posY = -bookHeight*scaleFrom +  bookHeight + positionTop;
+    const moveX = targetPositionLeft - posX;
+    const moveY = targetPositionTop - posY;
+    flipBook.current.pageFlip().flip(0);
+
+    setTimeout(()=>{
+      modalContent.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)'+
+      'scale(' + scaleFrom + ',' + scaleFrom + ')';
+      modalContent.style.zIndex = '1';
+      document.getElementById('footer').style.opacity = '0';
+      document.getElementById('modal-book').style.zIndex = '1'
+    },300)
+
+    setTimeout(() => {
+      modalContent.style.visibility = 'hidden';
+      setModal(prev=>({...prev,visible:false}));
+    },800)
   }
 
-  const pointerdown_handler = (ev) => {
-    evCache.push(ev);
-  }
+  const handleClick = (el) => {
+    const modalContent = document.getElementById('modal-content');
+    const currentDemo = document.getElementById(el);
+    modalContent.classList.remove('animate');
+    if(modal.currentDemo != el){
 
-  const pointermove_handler = (ev) => {
-   
-    // Find this event in the cache and update its record with this event
-    for (var i = 0; i < evCache.length; i++) {
-      if (ev.pointerId === evCache[i].pointerId) {
-         evCache[i] = ev;
-      break;
+      if(modal.currentDemo){
+        const bookWidth = modalContent.getBoundingClientRect().width*4;
+        const bookHeight = modalContent.getBoundingClientRect().height*4;
+        const targetPositionLeft = currentDemo.getBoundingClientRect().left;
+        const targetPositionTop = currentDemo.getBoundingClientRect().top;
+        const scaleFrom = currentDemo.getBoundingClientRect().height/(modalContent.getBoundingClientRect().height*6);
+        const posX =  targetPositionLeft - (bookWidth*1.2) + (bookWidth*scaleFrom);
+        const posY = targetPositionTop - (bookHeight*1.1) + (bookHeight*scaleFrom*1.35);
+        const moveX = posX;
+        const moveY = posY;
+        modalContent.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)'+'scale(' + scaleFrom + ',' + scaleFrom + ')';
+      }else{
+        const bookWidth = modalContent.getBoundingClientRect().width/2;
+        const bookHeight = modalContent.getBoundingClientRect().height/2;
+        const targetPositionLeft = currentDemo.getBoundingClientRect().left;
+        const targetPositionTop = currentDemo.getBoundingClientRect().top;
+        const positionLeft = modalContent.offsetLeft;
+        const positionTop = modalContent.offsetTop;
+        const scaleFrom = currentDemo.getBoundingClientRect().height/(modalContent.getBoundingClientRect().height);
+        const posX = (-bookWidth + modalContent.getBoundingClientRect().width/2)*scaleFrom +  bookWidth + positionLeft;
+        const posY = -bookHeight*scaleFrom +  bookHeight + positionTop;
+        const moveX = targetPositionLeft - posX;
+        const moveY = targetPositionTop - posY;
+  
+        modalContent.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)'+'scale(' + scaleFrom + ',' + scaleFrom + ')';
       }
     }
-   
-    // If two pointers are down, check for pinch gestures
-    if (evCache.length === 2) {
-      // Calculate the distance between the two pointers
-      let curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
-   
-      if (prevDiff > 0) {
-        if (curDiff > prevDiff) {
-          // The distance between the two pointers has increased
-          console.log("Pinch moving OUT -> Zoom in", ev);
-          onZoom(scale + 0.2)
-        }
-        if (curDiff < prevDiff) {
-          // The distance between the two pointers has decreased
-          console.log("Pinch moving IN -> Zoom out",ev);
-          onZoom(scale - 0.2)
-        }
-      }
-   
-      // Cache the distance for the next move event
-      prevDiff = curDiff;
-    }
+    setModal(prev=>({...prev,visible:true, currentDemo:el}));
+    
+    setTimeout(() => {
+      modalContent.classList.add('animate');
+      modalContent.style.visibility ="visible";
+      document.getElementById('footer').style.opacity = '1';
+      modalContent.style.transform ="";
+      modalContent.style.zIndex = '3';
+      document.getElementById('modal-book').style.zIndex = '3'
+      flipBook.current.pageFlip().flip(1);
+    }, 300);
   }
-
-  const remove_event = (ev) => {
-    // Remove this event from the target's cache
-    for (let i = 0; i < evCache.length; i++) {
-      if (evCache[i].pointerId === ev.pointerId) {
-        evCache.splice(i, 1);
-        break;
-      }
-    }
-   }
-
-  const pointerup_handler = (ev) => {
-    remove_event(ev);
-  }
-
-  useEffect(()=>{
-    let node = document.getElementById('reading-container');
-    if(node){
-      node.onpointerdown = pointerdown_handler;
-      node.onpointermove = pointermove_handler;
-      node.onpointerup = pointerup_handler;
-      node.onpointercancel = pointerup_handler;
-      node.onpointerout = pointerup_handler;
-      node.onpointerleave = pointerup_handler;
-    }
-  },[])
 
   return (
     <div className='page-container'>
-      <Toolbar onFullScreen={onFullScreen}/>
-      Update
       <div className='content'>
-        <div className='reading-container' id='reading-container' style={{transform:`scale(${scale})`}}>
-            <Document 
-              className={`custom-doc-wrapper`} 
-              renderTextLayer={false}
-              file="/assets/document/javascript_tutorial.pdf" 
-              onLoadSuccess={onDocumentLoadSuccess}
-            >
-              <div className='container-book'>
-                <HTMLFlipBook
-                    width={530} // base page width
-                    height={750} // base page height
-                    size="stretch"
-                    minWidth={315}
-                    maxWidth={1000}
-                    minHeight={420}
-                    maxHeight={1350}
-                    maxShadowOpacity="0.5" // Half shadow intensity
-                    showCover= {true}
-                    onChangeState={changeState}
-                    mobileScrollSupport={true}
-                    ref={flipBook}
-                    onInit={handleInit}
-                    flippingTime={300}
-                    onFlip={onPage}
-                    className={'flip-book'}
-                    style={{backgroundImage:'/assets/images/background.jpg'}}
-                >
-                  {[...Array(book.pdf.numPages).keys()].map(index =>{
-                    return <Page key={index} number={index + 1}/>
-                  })}
-                </HTMLFlipBook>
+        <div className='bookshelf'>
+          <div className='shelf'>
+            <div className='row-1'>
+              <div className='loc'>
+                <div>
+                  <div id='book-1' className="sample thumb1" style={{visibility: "visible"}} onClick={(e)=>handleClick('book-1')}></div>
+                </div>
+                <div>
+                  <div id='book-2' className="sample thumb1" style={{visibility: "visible"}} onClick={(e)=>handleClick('book-2')}></div>
+                </div>
+                <div>
+                  <div id='book-3' className="sample thumb1" style={{visibility: "visible"}} onClick={(e)=>handleClick('book-3')}></div>
+                </div>
               </div>
-            </Document>
+            </div>
+            <div className='row-2'>
+              <div className='loc'>
+                <div>
+                  <div className="sample thumb2"></div>
+                </div>
+                <div>
+                  <div className="sample thumb2"></div>
+                </div>
+                <div>
+                  <div className="sample thumb2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='modal-book' id='modal-book' style={{visibility:modal.visible ? 'visible' : 'hidden'}}>
+          <span className="close" onClick={()=>handleClose()}>&times;</span>
+          <div id="modal-content" className="modal-content" style={{visibility:'hidden'}}>
+            <div className='reading-container'  style={{transform:`scale(${scale})`}}>
+              <div className='custom-doc-wrapper' id='custom-doc-wrapper'>
+                <Document 
+                  className={`container-book`}
+                  file="/assets/document/javascript_tutorial.pdf" 
+                  onLoadSuccess={onDocumentLoadSuccess}
+                >
+                  <HTMLFlipBook
+                      width={530} // base page width
+                      height={750} // base page height
+                      size="stretch"
+                      minWidth={315}
+                      maxWidth={1000}
+                      minHeight={420}
+                      maxHeight={1350}
+                      showCover= {true}
+                      onChangeState={changeState}
+                      mobileScrollSupport={true}
+                      ref={flipBook}
+                      onInit={handleInit}
+                      onFlip={onPage}
+                      className={'flip-book'}
+                      disableFlipByClick={true}
+                      autoSize={true}
+                      style={{backgroundImage:'/assets/images/background.jpg'}}
+                  >
+                      {[...Array(book.pdf.numPages).keys()].map(index =>{
+                        return <PageRender key={index} number={index + 1}/>
+                      })}
+                  </HTMLFlipBook>
+                </Document>
+              </div>
+            </div>
+            <Footer 
+              flipBook={flipBook}
+              onNext={nextButtonClick} 
+              onPrev={prevButtonClick}
+              page={book.page}
+              totalPage={book.totalPage}
+              onZoomOut={()=>onZoom(scale - 0.5)}
+              onZoomIn={()=>onZoom(scale + 0.5)}
+            />
+          </div>
         </div>
       </div>
-      <Footer 
-        flipBook={flipBook}
-        onNext={nextButtonClick} 
-        onPrev={prevButtonClick}
-        page={book.page}
-        totalPage={book.totalPage}
-        onZoomOut={()=>onZoom(scale - 0.5)}
-        onZoomIn={()=>onZoom(scale + 0.5)}
-      />
     </div>
   )
 }
