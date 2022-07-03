@@ -13,6 +13,7 @@ const PageRender = React.forwardRef((props, ref) => {
             inputRef={reference} 
         />
       </div>
+      <div className="page-overlay" />
     </div>
   );
   });
