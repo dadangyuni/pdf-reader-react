@@ -12,10 +12,7 @@ const App = (props) => {
       <Routes>
         <Route 
           path='/' 
-          element={
-            <React.Suspense fallback={<div>Loading</div>}>
-              <Home {...props} />
-            </React.Suspense>}
+          element={<Home {...props} />}
         />
         <Route path='*' element={<div>Notfound</div>} />
       </Routes>
