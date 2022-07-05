@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import {Route, Routes} from 'react-router';
-import FlipBook from './Views/Flipbook'; 
+import Home from './Views/Home'; 
 
 
 /*eslint-disable*/
@@ -14,7 +14,7 @@ const App = (props) => {
           path='/' 
           element={
             <React.Suspense fallback={<div>Loading</div>}>
-              <FlipBook {...props} />
+              <Home {...props} />
             </React.Suspense>}
         />
         <Route path='*' element={<div>Notfound</div>} />
