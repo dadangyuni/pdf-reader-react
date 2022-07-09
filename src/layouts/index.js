@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import {Route, Routes} from 'react-router';
-import Home from './Views/Home'; 
-
+import { BrowserRouter } from 'react-router-dom';
+import ReactPdf from '../views/ReactPdf'; 
+import './styles/index.style.css'
 
 /*eslint-disable*/
 const App = (props) => {
@@ -12,7 +12,7 @@ const App = (props) => {
       <Routes>
         <Route 
           path='/' 
-          element={<Home {...props} />}
+          element={<ReactPdf {...props} />}
         />
         <Route path='*' element={<div>Notfound</div>} />
       </Routes>

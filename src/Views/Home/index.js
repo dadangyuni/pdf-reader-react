@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Flipbook from '../../components/Flipbook';
 import './index.style.css';
 
 const initialElement = {
@@ -136,7 +135,7 @@ const App = () => {
         <div className='modal-book' id='modal-book' style={{visibility: viewBook.visible ? 'visible' : 'hidden'}}>
           <span className="close" onClick={()=>handleClose()}>&times;</span>
           <div id="modal-content" className="modal-content">
-            <Flipbook ref={flipBook}/>
+            
           </div>
         </div>
       </div>
