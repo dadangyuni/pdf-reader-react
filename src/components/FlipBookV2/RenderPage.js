@@ -5,11 +5,10 @@ import {DataContext} from './';
 import LoadingPage from './components/LoadingPage';
 
 const PageRender = (props) => {
-    const {number} = props;
+    const { fitTo, scale: globalScale = 1, container, number } = props;
     const {book} = React.useContext(DataContext);
 
     const calculateScale = page => {
-        const { fitTo, scale: globalScale = 1, container } = props;
         if (!page || !container) {
             return globalScale;
         }
