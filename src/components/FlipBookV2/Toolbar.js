@@ -8,9 +8,8 @@ const Toolbar = (props) => {
     const [form] = Form.useForm();
     const gotoPage = (e) => {
         const idx = e.target.value;
-        console.log(idx);
         if(idx && idx >= 1 &&  idx <= totalPage){
-            if(book.mode === 'scroll'){
+            if(option.mode === 'scroll'){
                 setBook(prev=>({...prev, page:idx}))
             }
         }
@@ -38,6 +37,11 @@ const Toolbar = (props) => {
 
         }
     }
+
+    const changeTheme = () => {
+        const inContainer = document.getElementById('inner-container');
+        inContainer.classList.toggle('dark');
+    }
     
     useEffect(()=>{
         form.setFieldsValue({page:current});
@@ -60,7 +64,7 @@ const Toolbar = (props) => {
                         />
                     </Form.Item>
                 </Form>
-                <span>/{totalPage}</span>
+                <span className='total-page'>/{totalPage}</span>
                 <Button className='btn-icon-only' onClick={handleNext}><i className="fas fa-angle-right"></i></Button>
             </div>
             <div className='center-toolbar'>
@@ -76,10 +80,27 @@ const Toolbar = (props) => {
                 <Button className='btn-icon-only'><i className="fas fa-search-plus"></i></Button>
             </div>
             <div className='right-toolbar'>
-                <Button className='btn-icon-only'><i className="fas fa-adjust"></i></Button>
+                <Button 
+                    className='btn-icon-only'
+                    onClick={changeTheme}
+                >
+                    <i className="fas fa-adjust"></i>
+                </Button>
                 <Button className='btn-icon-only' onClick={toogleFullscreen}><i className="fas fa-expand"></i></Button>
-                <Button className='btn-icon-only'><i className="fas fa-bars"></i></Button>
-                <Button className='btn-icon-only'><i className="fas fa-book"></i></Button>
+                <Button 
+                    className='btn-icon-only' 
+                    disabled={option.mode === 'scroll'}
+                    onClick={()=>setOption(prev=>({...prev,mode:'scroll'}))}
+                >
+                    <i className="fas fa-bars"></i>
+                </Button>
+                <Button 
+                    className='btn-icon-only'
+                    disabled={option.mode === 'flip'}
+                    onClick={()=>setOption(prev=>({...prev,mode:'flip'}))}
+                >
+                    <i className="fas fa-book"></i>
+                </Button>
             </div>
         </div>
     )

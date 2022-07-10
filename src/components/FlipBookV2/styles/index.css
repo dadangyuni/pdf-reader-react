@@ -11,6 +11,22 @@
     --rpv-default-layout__sidebar-content--opened-border-color: rgba(0,0,0,.2);
     --rpv-default-layout__sidebar-content--opened-color: #000;
     --rpv-core__page-layer-box-shadow:rgba(0,0,0,.2) 2px 2px 8px 0px;
+    --rpv-print__progress-body-background-color: #363636;
+    --rpv-print__progress-body-border-color: transparent;
+    --rpv-print__progress-body-color: #fff;
+}
+
+.dark{
+    --rpv-default-layout__body-background-color: #1a1a1a;
+    --rpv-default-layout__container-border-color: #454647;
+    --rpv-default-layout__toolbar-background-color: #292929;
+    --rpv-default-layout__toolbar-border-bottom-color: #000;
+    --rpv-default-layout__sidebar-border-color: #000;
+    --rpv-default-layout__sidebar--opened-background-color: #fff;
+    --rpv-default-layout__sidebar-headers-background-color: #292929;
+    --rpv-default-layout__sidebar-content--opened-background-color: #1a1a1a;
+    --rpv-default-layout__sidebar-content--opened-border-color: #292929;
+    --rpv-default-layout__sidebar-content--opened-color: #fff;
 }
 
 
@@ -40,6 +56,9 @@
     left: 0;
     top: 0;
     z-index: 1;
+    -webkit-transition: background-color 0.2s linear;
+    -ms-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
 }
 
 .right-toolbar,.left-toolbar{
@@ -61,6 +80,13 @@
 
 .input-page{
     width: 50px;
+    background-color: var(--rpv-default-layout__body-background-color) !important;
+    color: var(--rpv-default-layout__sidebar-content--opened-color) !important;
+    border: none !important;
+}
+
+.total-page{
+    color: var(--rpv-default-layout__sidebar-content--opened-color);
 }
 
 /* end toolbar */
@@ -84,6 +110,10 @@
     background: transparent !important;
     border: none !important;
 }
+.btn-icon-only > i{
+    color: var(--rpv-default-layout__sidebar-content--opened-color);
+}
+
 
 .formitem-goto{
     margin: 0px !important;
@@ -94,7 +124,10 @@
     max-height: 100%;
     position: fixed;
     overflow: auto;
-    margin-top: 2.rem;
+    background-color: var(--rpv-default-layout__toolbar-background-color);
+    -webkit-transition: background-color 0.2s linear;
+    -ms-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
 }
 
 .react-pdf__Page{
@@ -116,4 +149,5 @@
     width: fit-content;
     margin: 10px auto;
 }
+
 /* end of content */

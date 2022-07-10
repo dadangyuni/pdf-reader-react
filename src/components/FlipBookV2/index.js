@@ -21,7 +21,10 @@ const FlipBookReact = (props) => {
         fitTo:'page',
         limit:4,
         fullScreen:false,
-        pageHeight:841
+        pageHeight:841,
+        mode:"scroll",
+        orientation: "",
+        theme:'light'
     });
     const [book,setBook] = useState({
         file:null,
@@ -29,8 +32,6 @@ const FlipBookReact = (props) => {
         outline: null,
         page: 1,
         totalPage: 0,
-        mode:"scroll",
-        orientation: ""
     });
 
     const onDocumentLoadSuccess = async (pdf) => {
@@ -65,7 +66,7 @@ const FlipBookReact = (props) => {
     return (
         <DataContext.Provider value={{flipBook,book,option,setBook,setOption}}>
             <div className='viewer-container'>
-                <div className='inner-container'>
+                <div id='inner-container' className='inner-container'>
                     <div className='toolbar'>
                         <Toolbar 
                             totalPage={book.totalPage} 
@@ -80,8 +81,8 @@ const FlipBookReact = (props) => {
                                     onLoadSuccess={onDocumentLoadSuccess}
                                     options={options}
                                 >
-                                    <div style={{height:calculateScroll()}}>
-                                        {book.mode === 'scroll' && book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
+                                    {option.mode === 'scroll' && <div style={{height:calculateScroll()}}>
+                                        { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
                                             const {min, max} = limitNumberWithinRange(book.page, book.page > 4 ? book.page - 3 : 1, book.page + 4)
                                             if(i + 1 >= min && i+1 <= max){
                                                 return <div key={i} className="page" id={`page-${i + 1}`}>
@@ -94,7 +95,8 @@ const FlipBookReact = (props) => {
                                             }
                                             return null
                                         })}
-                                    </div>
+                                    {option.mode === 'scroll' && <div>Flip</div>}
+                                    </div>}
                                 </Document>
                             </div>
                         </div>
