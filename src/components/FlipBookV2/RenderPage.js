@@ -54,7 +54,7 @@ const PageRender = (props) => {
         <div className="page-content">
             <Page pageNumber={number} scale={calculateScale()}
                 renderTextLayer={true} inputRef={
-                    book.page === number ? (ref) => ref && ref.scrollIntoView() : null
+                    parseInt(book.page) === parseInt(number) ? (ref) => ref && ref.scrollIntoView() : null
                 } 
                 loading={<LoadingPage/>} 
             />
