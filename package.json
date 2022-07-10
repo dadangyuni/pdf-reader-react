@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@react-pdf/renderer": "^2.3.0",
+    "antd": "^4.21.5",
+    "pdfjs-dist": "^2.14.305",
     "prop-types": "^15.8.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",

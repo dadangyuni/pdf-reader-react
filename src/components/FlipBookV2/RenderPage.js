@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';  
-import {Waypoint} from 'react-waypoint';
+import PropTypes from 'prop-types';
 import { Page } from 'react-pdf/dist/esm/entry.webpack';
+import {DataContext} from './';
+import LoadingPage from './components/LoadingPage';
 
 const PageRender = (props) => {
-    const {number, scale = 1, fitTo, reference, onPageChange} = props;
-    const handleWaypointEnter = page => {
-        page && onPageChange(number);
-    };
+    const {number} = props;
+    const {book} = React.useContext(DataContext);
 
     const calculateScale = page => {
         const { fitTo, scale: globalScale = 1, container } = props;
@@ -32,20 +31,34 @@ const PageRender = (props) => {
         return globalScale * pageScale;
     };
 
+    // const handleWaypointEnter = (page) => {
+    //     if(!disabledWay){
+    //         setBook({...book,page:number})
+    //     }
+    // }
+
+    // const renderPage = (page) => {
+    //     if(page.previousPosition === "inside" && page.currentPosition === "above"){
+    //         if(number <= book.totalPage){
+    //             setOption({...option,limit: option.limit + 1})
+    //         }
+    //     }
+    //     if(page.previousPosition === "inside" && page.currentPosition === "below"){
+    //         if(number >= 0){
+    //             setOption({...option,limit: option.limit - 1})
+    //         }
+    //     }
+    // }
+
     return (
-        <Waypoint
-            topOffset="50%"
-            bottomOffset="49%"
-            onEnter={handleWaypointEnter}
-            fireOnRapidScroll={false}
-            key={number}
-        >
-            <div className="page-content">
-                <Page pageNumber={number} scale={calculateScale()} 
-                    renderTextLayer={true} inputRef={reference} 
-                />
-            </div>
-        </Waypoint>
+        <div className="page-content">
+            <Page pageNumber={number} scale={calculateScale()}
+                renderTextLayer={true} inputRef={
+                    book.page === number ? (ref) => ref && ref.scrollIntoView() : null
+                } 
+                loading={<LoadingPage/>} 
+            />
+        </div>
     );
 }
 

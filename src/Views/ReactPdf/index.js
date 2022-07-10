@@ -5,7 +5,7 @@ const App = () => {
   return (
     <div className='page-container'>
       <div className='inner-page-container'>
-        <FlipBookV2/>
+        <FlipBookV2 url='/assets/document/javascript_tutorial.pdf'/>
       </div>
     </div>
   )

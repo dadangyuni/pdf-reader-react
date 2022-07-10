@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';  
 import { Document } from 'react-pdf/dist/esm/entry.webpack5';
 import PageRender from './RenderPage';
 import './styles/index.css';
@@ -12,18 +13,23 @@ const options = {
     standardFontDataUrl: 'standard_fonts/',
 };
 
-const App = (props) => {
+const FlipBookReact = (props) => {
+    const {url} = props;
     const flipBook = React.useRef();
-    const [scale, setScale] = useState(1);
+    const [option, setOption] = useState({
+        scale:1,
+        fitTo:'page',
+        limit:4,
+        fullScreen:false,
+        pageHeight:841
+    });
     const [book,setBook] = useState({
         file:null,
         pdf:{},
         outline: null,
-        refs: null,
         page: 1,
         totalPage: 0,
         mode:"scroll",
-        scale:1,
         orientation: ""
     });
 
@@ -34,16 +40,30 @@ const App = (props) => {
           pdf:pdf,
           totalPage:pdf.numPages,
           outline: outline,
-          refs: pdf.numPages && Array(pdf.numPages).fill("").map(() => React.createRef())
         }));
+    }
+
+    const calculateScroll = () => {
+        if(book.pdf.numPages){
+            return book.pdf.numPages * option.scale * option.pageHeight
+        }
+        return 'auto'
     }
 
     const onViewPage = (page) => {
         setBook(prev=>({...prev, page}))
     }
 
+    const limitNumberWithinRange = (num, min = 1, max = 20) => {
+        const parsed = parseInt(num);
+        return {
+            min: Math.min(parsed, min),
+            max: Math.max(parsed, max)
+        }
+    }
+
     return (
-        <DataContext.Provider value={{flipBook,book, setBook}}>
+        <DataContext.Provider value={{flipBook,book,option,setBook,setOption}}>
             <div className='viewer-container'>
                 <div className='inner-container'>
                     <div className='toolbar'>
@@ -56,21 +76,25 @@ const App = (props) => {
                         <div className='content-viewer'>
                             <div className='inner-viewer'>
                                 <Document 
-                                    file="/assets/document/javascript_tutorial.pdf" 
+                                    file={url} 
                                     onLoadSuccess={onDocumentLoadSuccess}
                                     options={options}
                                 >
-                                    {Array.apply(null, {length: book.pdf.numPages}).map((val, index) => {
-                                            return index + 1;
-                                        }).map((pages, i) =>{
-                                        return <div key={i} className="page" id={`page-${pages}`} ref={book.refs[i]}>
-                                            <PageRender number={pages} 
-                                                scale={book.scale}
-                                                reference={book.refs ? book.refs[i] : null}
-                                                onPageChange={onViewPage}
-                                            />
-                                        </div>
-                                    })}
+                                    <div style={{height:calculateScroll()}}>
+                                        {book.mode === 'scroll' && book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
+                                            const {min, max} = limitNumberWithinRange(book.page, book.page > 4 ? book.page - 3 : 1, book.page + 4)
+                                            if(i + 1 >= min && i+1 <= max){
+                                                return <div key={i} className="page" id={`page-${i + 1}`}>
+                                                    <PageRender number={i + 1} 
+                                                        scale={book.scale}
+                                                        onPageChange={onViewPage}
+                                                        disabledWay={false}
+                                                    />
+                                                </div>
+                                            }
+                                            return null
+                                        })}
+                                    </div>
                                 </Document>
                             </div>
                         </div>
@@ -81,4 +105,8 @@ const App = (props) => {
     )
 };
 
-export default App
+FlipBookReact.propTypes = {
+    url:PropTypes.string.isRequired
+}
+
+export default FlipBookReact
