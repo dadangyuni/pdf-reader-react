@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import ReactPdf from '../views/ReactPdf'; 
+import ReactPdf from '../views/react-pdf'; 
 import './styles/index.style.css'
 
 /*eslint-disable*/
