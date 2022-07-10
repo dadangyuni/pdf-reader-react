@@ -55,7 +55,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 1;
+    z-index: 3;
     -webkit-transition: background-color 0.2s linear;
     -ms-transition: background-color 0.2s linear;
     transition: background-color 0.2s linear;
@@ -96,6 +96,7 @@
 .content-wrapper{
     height: 100vh;
     scroll-margin: 2.5rem;
+    display: flex;
 }
 
 .content-viewer{
@@ -104,6 +105,28 @@
     flex: 1 1 auto;
     padding-top:  2.5em;
     scroll-padding: 50px 0 0 50px;
+}
+
+.outline-container{
+    background-color: #fff;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 100%;
+    z-index: 2;
+    transition: all 200ms ease-in-out;
+}
+
+.outline-container.show{
+    width: 20rem;
+}
+
+.outline-container .outline-inner-container{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .btn-icon-only{
@@ -123,6 +146,7 @@
     height: 100%;
     max-height: 100%;
     position: fixed;
+    flex: 1 1 auto;
     overflow: auto;
     background-color: var(--rpv-default-layout__toolbar-background-color);
     -webkit-transition: background-color 0.2s linear;

@@ -4,6 +4,7 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack5';
 import PageRender from './RenderPage';
 import './styles/index.css';
 import Toolbar from './Toolbar';
+import OutlineItems from './OutlineItems';
 
 export const DataContext = React.createContext(null);
 
@@ -24,7 +25,8 @@ const FlipBookReact = (props) => {
         pageHeight:841,
         mode:"scroll",
         orientation: "",
-        theme:'light'
+        theme:'light',
+        showBookmark:false
     });
     const [book,setBook] = useState({
         file:null,
@@ -63,6 +65,10 @@ const FlipBookReact = (props) => {
         }
     }
 
+    const onOutlineClick  = ({pageNumber}) => {
+        setBook(prev=>({...prev, page:pageNumber}))
+    }
+
     return (
         <DataContext.Provider value={{flipBook,book,option,setBook,setOption}}>
             <div className='viewer-container'>
@@ -74,6 +80,7 @@ const FlipBookReact = (props) => {
                         />
                     </div>
                     <div className='content-wrapper'>
+                        <OutlineItems onClickItem={onOutlineClick}/>
                         <div className='content-viewer'>
                             <div className='inner-viewer'>
                                 <Document 
@@ -85,11 +92,10 @@ const FlipBookReact = (props) => {
                                         { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
                                             const page = parseInt(book.page)
                                             const {min, max} = limitNumberWithinRange(page, page > 4 ? page - 3 : 1, page + 4)
-                                            console.log(min, max);
                                             if(i + 1 >= min && i+1 <= max){
                                                 return <div key={i} className="page" id={`page-${i + 1}`}>
                                                     <PageRender number={i + 1} 
-                                                        scale={book.scale}
+                                                        scale={option.scale}
                                                         onPageChange={onViewPage}
                                                         disabledWay={false}
                                                     />

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Form, InputNumber } from 'antd';
+import { Button, Form, InputNumber, Select } from 'antd';
 import {DataContext} from './';
 /*eslint-disable*/ 
 const Toolbar = (props) => {
@@ -42,6 +42,14 @@ const Toolbar = (props) => {
         const inContainer = document.getElementById('inner-container');
         inContainer.classList.toggle('dark');
     }
+
+    const handleScale = (value) => {
+        setOption(prev=>({...prev, scale:value}))
+    }
+
+    const toggleBookmark = () => {
+        setOption(prev=>({...prev, showBookmark:!option.showBookmark}))
+    }
     
     useEffect(()=>{
         form.setFieldsValue({page:current});
@@ -50,7 +58,9 @@ const Toolbar = (props) => {
     return (
         <div className='toolbar-inner-container'>
             <div className='left-toolbar'>
-                <Button className='btn-icon-only'><i className="far fa-bookmark"></i></Button>
+                <Button className='btn-icon-only' onClick={toggleBookmark}>
+                    <i className="far fa-bookmark"></i>
+                </Button>
                 <Button className='btn-icon-only'><i className="fas fa-search"></i></Button>
                 <Button className='btn-icon-only' onClick={handlePrev}><i className="fas fa-angle-left"></i></Button>
                 <Form form={form}>
@@ -68,16 +78,20 @@ const Toolbar = (props) => {
                 <Button className='btn-icon-only' onClick={handleNext}><i className="fas fa-angle-right"></i></Button>
             </div>
             <div className='center-toolbar'>
-                <Button className='btn-icon-only'><i className="fas fa-search-minus"></i></Button>
-                <select>
-                    <option value={0.5}>50%</option>
-                    <option value={0.75}>75%</option>
-                    <option value={1}>100%</option>
-                    <option value={1.5}>150%</option>
-                    <option value={2}>200%</option>
-                    <option value={2.5}>250%</option>
-                </select>
-                <Button className='btn-icon-only'><i className="fas fa-search-plus"></i></Button>
+                <Button className='btn-icon-only' onClick={()=>option.scale > 0.5 && handleScale(option.scale - 0.5)}>
+                    <i className="fas fa-search-minus"></i>
+                </Button>
+                <Select value={option.scale} onChange={handleScale}>
+                    <Select.Option value={0.5}>50%</Select.Option>
+                    <Select.Option value={0.75}>75%</Select.Option>
+                    <Select.Option value={1}>100%</Select.Option>
+                    <Select.Option value={1.5}>150%</Select.Option>
+                    <Select.Option value={2}>200%</Select.Option>
+                    <Select.Option value={2.5}>250%</Select.Option>
+                </Select>
+                <Button className='btn-icon-only' onClick={()=>option.scale < 2.5 && handleScale(option.scale + 0.5)}>
+                    <i className="fas fa-search-plus"></i>
+                </Button>
             </div>
             <div className='right-toolbar'>
                 <Button 
