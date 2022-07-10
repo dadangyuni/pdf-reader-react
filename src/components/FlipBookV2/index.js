@@ -83,7 +83,9 @@ const FlipBookReact = (props) => {
                                 >
                                     {option.mode === 'scroll' && <div style={{height:calculateScroll()}}>
                                         { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
-                                            const {min, max} = limitNumberWithinRange(book.page, book.page > 4 ? book.page - 3 : 1, book.page + 4)
+                                            const page = parseInt(book.page)
+                                            const {min, max} = limitNumberWithinRange(page, page > 4 ? page - 3 : 1, page + 4)
+                                            console.log(min, max);
                                             if(i + 1 >= min && i+1 <= max){
                                                 return <div key={i} className="page" id={`page-${i + 1}`}>
                                                     <PageRender number={i + 1} 
@@ -95,7 +97,10 @@ const FlipBookReact = (props) => {
                                             }
                                             return null
                                         })}
-                                    {option.mode === 'scroll' && <div>Flip</div>}
+                                    </div>}
+                                    
+                                    {option.mode === 'flip' && <div className='flipbook-wrapper'>
+                                        
                                     </div>}
                                 </Document>
                             </div>
