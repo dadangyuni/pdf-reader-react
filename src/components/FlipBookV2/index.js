@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';  
 import { Document } from 'react-pdf/dist/esm/entry.webpack5';
-import PageRender from './RenderPage';
-import './styles/index.css';
 import Toolbar from './Toolbar';
+import PageRender from './RenderPage';
 import OutlineItems from './OutlineItems';
+import {RenderFlipPage} from './components';
+import './styles/index.css';
+import Flipviewer from './Flipviewer';
 
 export const DataContext = React.createContext(null);
 
@@ -23,7 +25,7 @@ const FlipBookReact = (props) => {
         limit:4,
         fullScreen:false,
         pageHeight:841,
-        mode:"scroll",
+        mode:"flip",
         orientation: "",
         theme:'light',
         showBookmark:false
@@ -69,6 +71,12 @@ const FlipBookReact = (props) => {
         setBook(prev=>({...prev, page:pageNumber}))
     }
 
+    const handleFlip = (e) => {
+        // if(e.data){
+        //     setBook(prev=>({...prev, page:e.data}))
+        // }
+    }
+
     return (
         <DataContext.Provider value={{flipBook,book,option,setBook,setOption}}>
             <div className='viewer-container'>
@@ -104,9 +112,20 @@ const FlipBookReact = (props) => {
                                             return null
                                         })}
                                     </div>}
-                                    
-                                    {option.mode === 'flip' && <div className='flipbook-wrapper'>
-                                        
+                                    {option.mode === 'flip' && <div className='outer-flipbook-container'>
+                                        <div className='inner-flipbook'>
+                                            <Flipviewer onFlip={handleFlip} ref={flipBook}>
+                                                { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
+                                                    return <RenderFlipPage key={i} number={i+1}>
+                                                        <PageRender number={i + 1} 
+                                                            scale={1}
+                                                            onPageChange={onViewPage}
+                                                            disabledWay={false}
+                                                        />
+                                                    </RenderFlipPage>
+                                                })}
+                                            </Flipviewer>
+                                        </div>
                                     </div>}
                                 </Document>
                             </div>
