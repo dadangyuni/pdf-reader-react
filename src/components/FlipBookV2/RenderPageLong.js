@@ -36,6 +36,7 @@ const PageRender = (props) => {
                 renderTextLayer={true}  
                 loading={<LoadingPage/>} 
                 onLoadSuccess={onMeasure}
+                onRenderSuccess={onMeasure}
             />
         </div>
     );

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import {AutoSizer, CellMeasurer, CellMeasurerCache, List} from 'react-virtualized';
 import RenderPageLong from './RenderPageLong';
 /*eslint-disable*/
-const RenderRow = ({index ,style, isVisible, isScrolling, parent, cache, option, onVisbleRow}) => {
+const RenderRow = ({index ,style, isVisible, isScrolling, parent, option, cache, onVisbleRow}) => {
 
     useEffect(()=>{
         isVisible && isScrolling && onVisbleRow(index)
@@ -42,21 +42,23 @@ const ScrollView = (props) => {
     },[])
 
     return (
-        <div style={{width:'100%', height:'100vh'}}>
+        <div style={{width:'100%', height:'100vh', overflow:'hidden'}}>
             <AutoSizer>
                 {({width, height})=>{
-                    return <List 
-                        width={width}
-                        height={height}
-                        deferredMeasurementCache={cache.current}
-                        rowHeight={cache.current.rowHeight}
-                        rowCount={rowCount}
-                        scrollToIndex={scrollTo - 1}
-                        rowRenderer={(params) => {
-                            return <RenderRow key={params.key} {...{...params, onVisbleRow,  cache, option}}/>
-                        }}
-                        overscanRowCount={10}
-                    />
+                    return (
+                        <List 
+                            width={width}
+                            height={height}
+                            deferredMeasurementCache={cache.current}
+                            rowHeight={cache.current.rowHeight}
+                            rowCount={rowCount}
+                            scrollToIndex={scrollTo - 1}
+                            rowRenderer={(params) => {
+                                return <RenderRow key={params.key} {...{...params, onVisbleRow,  cache, option}}/>
+                            }}
+                            overscanRowCount={10}
+                        />
+                    )
                 }}
             </AutoSizer>
         </div>
