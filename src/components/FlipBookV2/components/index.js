@@ -3,6 +3,5 @@ import RenderFlipPage from "./RenderFlipPage";
 
 export {
     LoadingPage,
-    RenderFlipPage
-    
+    RenderFlipPage,
 }

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';  
+import PropTypes from 'prop-types'; 
 import { Document } from 'react-pdf/dist/esm/entry.webpack5';
 import Toolbar from './Toolbar';
 import PageRender from './RenderPage';
 import OutlineItems from './OutlineItems';
 import {RenderFlipPage} from './components';
-import './styles/index.css';
 import Flipviewer from './Flipviewer';
+import ScrollView from './ScrollView';
+import './styles/index.css';
 
 export const DataContext = React.createContext(null);
 
@@ -25,7 +26,7 @@ const FlipBookReact = (props) => {
         limit:4,
         fullScreen:false,
         pageHeight:841,
-        mode:"flip",
+        mode:"scroll",
         orientation: "",
         theme:'light',
         showBookmark:false
@@ -48,23 +49,8 @@ const FlipBookReact = (props) => {
         }));
     }
 
-    const calculateScroll = () => {
-        if(book.pdf.numPages){
-            return book.pdf.numPages * option.scale * option.pageHeight
-        }
-        return 'auto'
-    }
-
     const onViewPage = (page) => {
         setBook(prev=>({...prev, page}))
-    }
-
-    const limitNumberWithinRange = (num, min = 1, max = 20) => {
-        const parsed = parseInt(num);
-        return {
-            min: Math.min(parsed, min),
-            max: Math.max(parsed, max)
-        }
     }
 
     const onOutlineClick  = ({pageNumber}) => {
@@ -96,37 +82,28 @@ const FlipBookReact = (props) => {
                                     onLoadSuccess={onDocumentLoadSuccess}
                                     options={options}
                                 >
-                                    {option.mode === 'scroll' && <div style={{height:calculateScroll()}}>
+                                    {/* scroll view start */}
+                                    {option.mode === 'scroll' && book.pdf.numPages && <ScrollView
+                                        rowCount={book.pdf.numPages}
+                                        option={option}
+                                        onViewPage={onViewPage}
+                                        scrollTo={parseInt(book.page)}
+                                    />}
+                                    {/* scroll view end */}
+
+                                    {/* scroll view start */}
+                                    {option.mode === 'flip' && <Flipviewer onFlip={handleFlip} ref={flipBook}>
                                         { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
-                                            const page = parseInt(book.page)
-                                            const {min, max} = limitNumberWithinRange(page, page > 4 ? page - 3 : 1, page + 4)
-                                            if(i + 1 >= min && i+1 <= max){
-                                                return <div key={i} className="page" id={`page-${i + 1}`}>
-                                                    <PageRender number={i + 1} 
-                                                        scale={option.scale}
-                                                        onPageChange={onViewPage}
-                                                        disabledWay={false}
-                                                    />
-                                                </div>
-                                            }
-                                            return null
+                                            return <RenderFlipPage key={i} number={i+1}>
+                                                <PageRender number={i + 1} 
+                                                    scale={1}
+                                                    onPageChange={onViewPage}
+                                                    disabledWay={false}
+                                                />
+                                            </RenderFlipPage>
                                         })}
-                                    </div>}
-                                    {option.mode === 'flip' && <div className='outer-flipbook-container'>
-                                        <div className='inner-flipbook'>
-                                            <Flipviewer onFlip={handleFlip} ref={flipBook}>
-                                                { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
-                                                    return <RenderFlipPage key={i} number={i+1}>
-                                                        <PageRender number={i + 1} 
-                                                            scale={1}
-                                                            onPageChange={onViewPage}
-                                                            disabledWay={false}
-                                                        />
-                                                    </RenderFlipPage>
-                                                })}
-                                            </Flipviewer>
-                                        </div>
-                                    </div>}
+                                    </Flipviewer>}
+                                    {/* flipbook view end */}
                                 </Document>
                             </div>
                         </div>

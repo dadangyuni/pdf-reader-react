@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Page } from 'react-pdf/dist/esm/entry.webpack';
-import {DataContext} from './';
 import LoadingPage from './components/LoadingPage';
 
 const PageRender = (props) => {
     const { fitTo, scale: globalScale = 1, container, number, onMeasure } = props;
-    const {book} = React.useContext(DataContext);
 
     const calculateScale = page => {
         if (!page || !container) {
@@ -32,10 +30,10 @@ const PageRender = (props) => {
 
     return (
         <div className="page-content">
-            <Page pageNumber={number} scale={calculateScale()}
-                renderTextLayer={true} inputRef={
-                    parseInt(book.page) === parseInt(number) ? (ref) => ref && ref.scrollIntoView() : null
-                } 
+            <Page 
+                pageNumber={number} 
+                scale={calculateScale()}
+                renderTextLayer={true}  
                 loading={<LoadingPage/>} 
                 onLoadSuccess={onMeasure}
             />

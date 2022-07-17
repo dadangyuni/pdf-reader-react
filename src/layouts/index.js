@@ -14,7 +14,7 @@ const App = (props) => {
           path='/' 
           element={<ReactPdf {...props} />}
         />
-        <Route path='*' element={<div>Notfound</div>} />
+        <Route path='*' element={<div>Not found</div>} />
       </Routes>
     </BrowserRouter>
   )

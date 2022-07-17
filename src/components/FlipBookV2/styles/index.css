@@ -200,6 +200,7 @@
     max-width: 100vw;
     max-height: 100%;
     height: 100%;
+    margin: auto;
     position: relative;
     overflow: hidden;
 }
@@ -214,5 +215,21 @@
     margin-top: 0px;
     height: 100%;
     width: 100%;
+}
+
+@media (min-width: 768px){
+    .outer-flipbook-container {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px){
+    .outer-flipbook-container{
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px){
+    .outer-flipbook-container{
+        max-width: 1140px;
+    }
 }
 /* end flipbook container */
