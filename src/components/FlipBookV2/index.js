@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types'; 
-import { Document } from 'react-pdf/dist/esm/entry.webpack5';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import { Document, pdfjs } from 'react-pdf'
 import Toolbar from './Toolbar';
 import PageRender from './RenderPage';
 import OutlineItems from './OutlineItems';
@@ -8,13 +9,15 @@ import {RenderFlipPage} from './components';
 import Flipviewer from './Flipviewer';
 import ScrollView from './ScrollView';
 import './styles/index.css';
+import './styles/Textlayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 export const DataContext = React.createContext(null);
 
 const options = {
-    cMapUrl: 'cmaps/',
+    cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
     cMapPacked: true,
-    standardFontDataUrl: 'standard_fonts/',
 };
 
 const FlipBookReact = (props) => {

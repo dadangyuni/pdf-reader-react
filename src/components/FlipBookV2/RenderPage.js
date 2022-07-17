@@ -5,7 +5,7 @@ import {DataContext} from './';
 import LoadingPage from './components/LoadingPage';
 
 const PageRender = (props) => {
-    const { fitTo, scale: globalScale = 1, container, number, onMeasure } = props;
+    const { fitTo, scale: globalScale = 1, container, number } = props;
     const {book} = React.useContext(DataContext);
 
     const calculateScale = page => {
@@ -30,6 +30,17 @@ const PageRender = (props) => {
         return globalScale * pageScale;
     };
 
+    const removeTextLayerOffset = () => {
+        const textLayers = document.querySelectorAll(".react-pdf__Page__textContent");
+        textLayers.forEach(layer => {
+            const { style } = layer;
+            style.top = "0";
+            style.left = "0";
+            style.transform = "";
+            style['z-index']="1";
+        });
+    }
+
     return (
         <div className="page-content">
             <Page pageNumber={number} scale={calculateScale()}
@@ -37,7 +48,7 @@ const PageRender = (props) => {
                     parseInt(book.page) === parseInt(number) ? (ref) => ref && ref.scrollIntoView() : null
                 } 
                 loading={<LoadingPage/>} 
-                onLoadSuccess={onMeasure}
+                onLoadSuccess={removeTextLayerOffset}
             />
         </div>
     );

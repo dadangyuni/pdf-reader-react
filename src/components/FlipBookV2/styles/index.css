@@ -211,10 +211,22 @@
     margin-top: 2rem;
 }
 
+.react-pdf__Page__svg {
+    margin: 0 auto;
+}
+
 .inner-flipbook .page-content, .inner-flipbook .react-pdf__Page{
     margin-top: 0px;
     height: 100%;
     width: 100%;
+    position: relative;
+}
+
+.react-pdf__Page__textContent{
+    top: 0 !important;
+    left: 0 !important;
+    transform: "" !important;
+    z-index: 1 !important;
 }
 
 @media (min-width: 768px){

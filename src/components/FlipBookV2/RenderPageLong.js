@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Page } from 'react-pdf/dist/esm/entry.webpack';
+import { Page } from 'react-pdf';
 import LoadingPage from './components/LoadingPage';
 
 const PageRender = (props) => {
@@ -34,9 +34,9 @@ const PageRender = (props) => {
                 pageNumber={number} 
                 scale={calculateScale()}
                 renderTextLayer={true}  
+                renderAnnotationLayer={false}
                 loading={<LoadingPage/>} 
                 onLoadSuccess={onMeasure}
-                onRenderSuccess={onMeasure}
             />
         </div>
     );
