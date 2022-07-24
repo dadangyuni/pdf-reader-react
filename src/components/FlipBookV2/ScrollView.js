@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import {AutoSizer, CellMeasurer, CellMeasurerCache, List} from 'react-virtualized';
+import 'react-virtualized/styles.css';
 import RenderPageLong from './RenderPageLong';
 /*eslint-disable*/
 const RenderRow = ({index ,style, isVisible, isScrolling, parent, option, cache, onVisbleRow}) => {
@@ -17,7 +18,7 @@ const RenderRow = ({index ,style, isVisible, isScrolling, parent, option, cache,
         >
             {({measure, registerChild}) => {
                 return (
-                    <div style={style} ref={registerChild} id={`page-${index + 1}`}>
+                    <div style={style} ref={registerChild} id={`page-${index+1}`} className={'page-rendered-rcx'}>
                         <RenderPageLong number={index + 1}  
                             scale={option.scale}
                             onMeasure={measure}

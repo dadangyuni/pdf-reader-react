@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Routes} from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import ReactPdf from '../views/react-pdf'; 
+import PdfTurnjs from '../views/pdfTurnjs';
 import './styles/index.style.css'
 
 /*eslint-disable*/
@@ -12,7 +12,7 @@ const App = (props) => {
       <Routes>
         <Route 
           path='/' 
-          element={<ReactPdf {...props} />}
+          element={<PdfTurnjs {...props} />}
         />
         <Route path='*' element={<div>Not found</div>} />
       </Routes>

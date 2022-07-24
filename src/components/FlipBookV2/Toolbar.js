@@ -101,20 +101,20 @@ const Toolbar = (props) => {
                     <i className="fas fa-adjust"></i>
                 </Button>
                 <Button className='btn-icon-only' onClick={toogleFullscreen}><i className="fas fa-expand"></i></Button>
-                <Button 
+                {/* <Button 
                     className='btn-icon-only' 
                     disabled={option.mode === 'scroll'}
                     onClick={()=>setOption(prev=>({...prev,mode:'scroll'}))}
                 >
                     <i className="fas fa-bars"></i>
-                </Button>
-                <Button 
+                </Button> */}
+                {/* <Button 
                     className='btn-icon-only'
                     disabled={option.mode === 'flip'}
                     onClick={()=>setOption(prev=>({...prev,mode:'flip'}))}
                 >
                     <i className="fas fa-book"></i>
-                </Button>
+                </Button> */}
             </div>
         </div>
     )

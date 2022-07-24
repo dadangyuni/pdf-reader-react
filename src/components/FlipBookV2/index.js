@@ -29,7 +29,7 @@ const FlipBookReact = (props) => {
         limit:4,
         fullScreen:false,
         pageHeight:841,
-        mode:"scroll",
+        mode:"flip",
         orientation: "",
         theme:'light',
         showBookmark:false
@@ -85,28 +85,13 @@ const FlipBookReact = (props) => {
                                     onLoadSuccess={onDocumentLoadSuccess}
                                     options={options}
                                 >
-                                    {/* scroll view start */}
                                     {option.mode === 'scroll' && book.pdf.numPages && <ScrollView
                                         rowCount={book.pdf.numPages}
                                         option={option}
                                         onViewPage={onViewPage}
                                         scrollTo={parseInt(book.page)}
                                     />}
-                                    {/* scroll view end */}
-
-                                    {/* scroll view start */}
-                                    {option.mode === 'flip' && <Flipviewer onFlip={handleFlip} ref={flipBook}>
-                                        { book.pdf.numPages && Array.from(new Array(book.pdf.numPages), (el, i) =>{
-                                            return <RenderFlipPage key={i} number={i+1}>
-                                                <PageRender number={i + 1} 
-                                                    scale={1}
-                                                    onPageChange={onViewPage}
-                                                    disabledWay={false}
-                                                />
-                                            </RenderFlipPage>
-                                        })}
-                                    </Flipviewer>}
-                                    {/* flipbook view end */}
+                                    {option.mode === 'flip' && <Flipviewer onFlip={handleFlip} scale={option.scale}  />}
                                 </Document>
                             </div>
                         </div>
