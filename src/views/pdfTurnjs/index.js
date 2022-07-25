@@ -1,5 +1,5 @@
 import React, { useState, createContext } from 'react';
-import { Document, pdfjs } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document } from 'react-pdf/dist/esm/entry.webpack5';
 import ControlBar from './ControlBar';
 import FlipView from './FlipView';
 import './style/index.css';
@@ -17,10 +17,8 @@ const App = () => {
     page: 1,
     totalPage: 0,
   });
-  const documentConfig = {
-    cMapUrl: `https://unpkg.com/pdfjs-dist@${pdfjs.version}/cmaps/`,
-    cMapPacked: true,
-  }
+
+  
 
   const onDocLoadSucces = async (pdf) => {
     const outline = await pdf.getOutline();
@@ -44,16 +42,17 @@ const App = () => {
         <div className='inner-container'>
           <div className='book-wrapper'>
             <div className='inner-book'>
-              <Document 
-                file={url} 
-                options={documentConfig}
-                onLoadSuccess={onDocLoadSucces}
-              >
-                <FlipView ref={flipbook}/>
-              </Document>
+                <Document 
+                  file={url}
+                  onLoadSuccess={onDocLoadSucces}
+                >
+                  <FlipView ref={flipbook}/>
+                </Document>              
             </div>
           </div>
-          <div className='pf-thumbnails'>Thumbnails</div>
+          <div className='pf-thumbnails'>
+            thumbnail
+          </div>
           <ControlBar
             page={book.page}
             onNavigate={onNavigate}
