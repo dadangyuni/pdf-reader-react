@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was build with [Create React App](https://github.com/facebook/create-react-app) and [Tailwind CSS](https://tailwindcss.com/)
+This project was build with [Create React App](https://github.com/facebook/create-react-app)
 
 ## Available Scripts
 
